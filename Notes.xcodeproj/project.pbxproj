@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4D7CD4884F91D804DCCEFBCC /* Pods_Notes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B996CDB34B32DDB0EA267F3E /* Pods_Notes.framework */; };
-		78264D4922839E6500D0308D /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78264D4822839E6500D0308D /* Help.swift */; };
 		D922A567227DA0BA00D1AEE2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922A566227DA0BA00D1AEE2 /* AppDelegate.swift */; };
 		D922A569227DA0BA00D1AEE2 /* NotesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922A568227DA0BA00D1AEE2 /* NotesListViewController.swift */; };
 		D922A56C227DA0BA00D1AEE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D922A56A227DA0BA00D1AEE2 /* Main.storyboard */; };
@@ -21,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		5DCCE5B36A7694EA70ADB291 /* Pods-Notes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Notes/Pods-Notes.debug.xcconfig"; sourceTree = "<group>"; };
-		78264D4822839E6500D0308D /* Help.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		881963F073C3A93D447228CB /* Pods-Notes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Notes/Pods-Notes.release.xcconfig"; sourceTree = "<group>"; };
 		B996CDB34B32DDB0EA267F3E /* Pods_Notes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Notes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D922A563227DA0BA00D1AEE2 /* Notes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,7 +79,6 @@
 				D98152182282FD5B00CC4843 /* NotesModel.swift */,
 				D922A568227DA0BA00D1AEE2 /* NotesListViewController.swift */,
 				D990C40A227DBB840048A2A1 /* CreateNoteViewController.swift */,
-				78264D4822839E6500D0308D /* Help.swift */,
 				D922A56A227DA0BA00D1AEE2 /* Main.storyboard */,
 				D922A570227DA0BC00D1AEE2 /* Assets.xcassets */,
 				D922A572227DA0BC00D1AEE2 /* LaunchScreen.storyboard */,
@@ -216,7 +213,6 @@
 			files = (
 				D922A569227DA0BA00D1AEE2 /* NotesListViewController.swift in Sources */,
 				D922A56F227DA0BA00D1AEE2 /* Notes.xcdatamodeld in Sources */,
-				78264D4922839E6500D0308D /* Help.swift in Sources */,
 				D990C40B227DBB840048A2A1 /* CreateNoteViewController.swift in Sources */,
 				D922A567227DA0BA00D1AEE2 /* AppDelegate.swift in Sources */,
 				D98152192282FD5B00CC4843 /* NotesModel.swift in Sources */,
