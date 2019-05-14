@@ -33,7 +33,19 @@ class NotesListViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(loadList), name: NSNotification.Name(rawValue: "load"), object: nil)
         
-        items = realm.objects(NotesModel.self).sorted(byKeyPath: "dateTime", ascending: false)
+        sortObjects()
+    }
+    
+    func sortObjects() {
+        let ascending = UserDefaults.standard.bool(forKey: "ascending")
+        let sortedByKeyPath = UserDefaults.standard.string(forKey: "sortedByKeyPath")
+        
+        if searchBarOutlet.text == "" {
+            items = realm.objects(NotesModel.self).sorted(byKeyPath: sortedByKeyPath!, ascending: ascending)
+        } else {
+            items = realm.objects(NotesModel.self).sorted(byKeyPath: sortedByKeyPath!, ascending: ascending).filter("noteText CONTAINS[c] %@", searchBarOutlet.text!)
+        }
+        
     }
     
     @objc func loadList(notification: NSNotification){
@@ -64,7 +76,6 @@ class NotesListViewController: UIViewController {
                 }
             }
         }
-        
     }
     
     // MARK: - Actions
@@ -79,17 +90,29 @@ class NotesListViewController: UIViewController {
         dismissKeyboard()
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "From new to old", style: .default , handler:{ (UIAlertAction)in
-            self.items = self.realm.objects(NotesModel.self).sorted(byKeyPath: "dateTime", ascending: false)
+            
+            UserDefaults.standard.set(false, forKey: "ascending")
+            UserDefaults.standard.set("dateTime", forKey: "sortedByKeyPath")
+            
+            self.sortObjects()
             self.tableViewOutlet.reloadData()
         }))
         
         alert.addAction(UIAlertAction(title: "From old to new", style: .default , handler:{ (UIAlertAction)in
-            self.items = self.realm.objects(NotesModel.self).sorted(byKeyPath: "dateTime", ascending: true)
+            
+            UserDefaults.standard.set(true, forKey: "ascending")
+            UserDefaults.standard.set("dateTime", forKey: "sortedByKeyPath")
+            
+            self.sortObjects()
             self.tableViewOutlet.reloadData()
         }))
         
         alert.addAction(UIAlertAction(title: "Alphabetically", style: .default , handler:{ (UIAlertAction)in
-            self.items = self.realm.objects(NotesModel.self).sorted(byKeyPath: "noteText", ascending: true)
+            
+            UserDefaults.standard.set(true, forKey: "ascending")
+            UserDefaults.standard.set("noteText", forKey: "sortedByKeyPath")
+            
+            self.sortObjects()
             self.tableViewOutlet.reloadData()
         }))
         
@@ -103,6 +126,7 @@ class NotesListViewController: UIViewController {
 extension NotesListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if items.count != 0 {
             return items.count
         }
@@ -111,6 +135,7 @@ extension NotesListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableViewOutlet.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        
         let item = items[indexPath.row]
         cell.textLabel?.text = item.noteText
         cell.detailTextLabel?.text = item.dateTime
@@ -118,6 +143,8 @@ extension NotesListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        dismissKeyboard()
+        
         let editingRow = items[indexPath.row]
         
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { _,_ in
@@ -137,22 +164,43 @@ extension NotesListViewController: UITableViewDelegate, UITableViewDataSource {
         return [deleteAction, editAction]
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You selected cell #\(indexPath.row)!")
-                
+        dismissKeyboard()
+        
         passedState = 1
         passValue = true
         performSegue(withIdentifier: "NotesListToCreateNote", sender: self)
         tableViewOutlet.deselectRow(at: indexPath, animated: true)
-
     }
     
 }
 
 // MARK: - SearchBarDelegate
 extension NotesListViewController: UISearchBarDelegate {
-
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        let ascending = UserDefaults.standard.bool(forKey: "ascending")
+        let sortedByKeyPath = UserDefaults.standard.string(forKey: "sortedByKeyPath")
+        
+        let searchText = searchBarOutlet.text
+        
+        if searchText == "" {
+            items = realm.objects(NotesModel.self).sorted(byKeyPath: sortedByKeyPath!, ascending: ascending)
+            self.tableViewOutlet.reloadData()
+        } else {
+            items = realm.objects(NotesModel.self).filter("noteText CONTAINS[c] %@", searchText!)
+            self.tableViewOutlet.reloadData()
+        }
+        
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBarOutlet.text = ""
+        tableViewOutlet.reloadData()
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.searchBarOutlet.endEditing(true)
     }
